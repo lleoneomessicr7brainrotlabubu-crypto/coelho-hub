@@ -9,17 +9,56 @@ local CommF = RS:WaitForChild("Remotes"):WaitForChild("CommF_")
 
 -- [[ DATABASE DE MISSÕES ]]
 local AllQuests = {
+  -- [[ DATABASE DE MISSÕES COMPLETA - SEA 1 (1 AO 700) - COELHO HUB V18 ]]
+local AllQuests = {
+    -- INICIAL / JUNGLE
     {Level = 0, Mob = "Bandit", Quest = "BanditQuest1", ID = 1, NPC = Vector3.new(1059, 15, 1549)},
     {Level = 10, Mob = "Monkey", Quest = "MonkeyQuest1", ID = 1, NPC = Vector3.new(-1599, 36, 151)},
     {Level = 15, Mob = "Gorilla", Quest = "MonkeyQuest1", ID = 2, NPC = Vector3.new(-1599, 36, 151)},
+    
+    -- PIRATE VILLAGE
     {Level = 30, Mob = "Pirate", Quest = "PirateQuest1", ID = 1, NPC = Vector3.new(-1141, 4, 3832)},
+    {Level = 40, Mob = "Brute", Quest = "PirateQuest1", ID = 2, NPC = Vector3.new(-1141, 4, 3832)},
+    
+    -- DESERT
     {Level = 60, Mob = "Desert Bandit", Quest = "DesertQuest", ID = 1, NPC = Vector3.new(894, 6, 4390)},
+    {Level = 75, Mob = "Desert Officer", Quest = "DesertQuest", ID = 2, NPC = Vector3.new(894, 6, 4390)},
+    
+    -- FROZEN VILLAGE (SNOW)
     {Level = 90, Mob = "Snow Bandit", Quest = "SnowQuest", ID = 1, NPC = Vector3.new(1386, 15, -1322)},
+    {Level = 120, Mob = "Snowman", Quest = "SnowQuest", ID = 2, NPC = Vector3.new(1386, 15, -1322)},
+    
+    -- MARINE FORTRESS
+    {Level = 150, Mob = "Chief Petty Officer", Quest = "MarineQuest", ID = 1, NPC = Vector3.new(-4892, 22, 3845)},
+    {Level = 175, Mob = "Mugetsu", Quest = "MarineQuest", ID = 2, NPC = Vector3.new(-4892, 22, 3845)}, -- (Opcional, mas ajuda no gap)
+
+    -- PRISON
     {Level = 190, Mob = "Prisoner", Quest = "PrisonerQuest", ID = 1, NPC = Vector3.new(5308, 1, 485)},
+    {Level = 210, Mob = "Dangerous Prisoner", Quest = "PrisonerQuest", ID = 2, NPC = Vector3.new(5308, 1, 485)},
+    {Level = 225, Mob = "Warden", Quest = "PrisonerQuest", ID = 3, NPC = Vector3.new(5308, 1, 485)}, -- Boss Quest integrada
+    
+    -- UNDERWATER (FISHMAN)
     {Level = 250, Mob = "Fishman Warrior", Quest = "FishmanQuest", ID = 1, NPC = Vector3.new(61122, 18, 1565)},
+    {Level = 275, Mob = "Fishman Commando", Quest = "FishmanQuest", ID = 2, NPC = Vector3.new(61122, 18, 1565)},
+    
+    -- UPPER YARD / MAGMA VILLAGE
     {Level = 300, Mob = "Military Soldier", Quest = "MagmaQuest", ID = 1, NPC = Vector3.new(-5313, 12, 8515)},
+    {Level = 330, Mob = "Military Spy", Quest = "MagmaQuest", ID = 2, NPC = Vector3.new(-5313, 12, 8515)},
+    
+    -- SKYLANDS (SKY 1 e 2)
+    {Level = 350, Mob = "Skypiea Soldier", Quest = "SkyQuest", ID = 1, NPC = Vector3.new(-4842, 715, -2620)},
+    {Level = 375, Mob = "Shaman", Quest = "SkyQuest", ID = 2, NPC = Vector3.new(-4842, 715, -2620)},
     {Level = 450, Mob = "God's Guard", Quest = "SkyExpQuest1", ID = 1, NPC = Vector3.new(-4721, 845, -1953)},
-    {Level = 625, Mob = "Galley Pirate", Quest = "FountainQuest", ID = 1, NPC = Vector3.new(5135, 4, 4007)}
+    {Level = 475, Mob = "Shanda", Quest = "SkyExpQuest1", ID = 2, NPC = Vector3.new(-4721, 845, -1953)},
+    {Level = 525, Mob = "Royal Guard", Quest = "SkyExpQuest2", ID = 1, NPC = Vector3.new(-7903, 1812, -2251)},
+    {Level = 550, Mob = "Royal Squad", Quest = "SkyExpQuest2", ID = 2, NPC = Vector3.new(-7903, 1812, -2251)},
+    
+    -- FOUNTAIN CITY
+    {Level = 625, Mob = "Galley Pirate", Quest = "FountainQuest", ID = 1, NPC = Vector3.new(5135, 4, 4007)},
+    {Level = 650, Mob = "Galley Captain", Quest = "FountainQuest", ID = 2, NPC = Vector3.new(5135, 4, 4007)},
+    
+    -- TRANSIÇÃO SEA 2 (Nível Final do Sea 1)
+    {Level = 700, Mob = "Raider", Quest = "Area1Quest", ID = 1, NPC = Vector3.new(-426, 73, 1836)}
 }
 
 -- [[ CONFIGURAÇÃO INICIAL ]]
