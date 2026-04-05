@@ -559,6 +559,49 @@ ExitBtn.MouseButton1Click:Connect(function()
     ExitBtn.Visible = false
 end)
 
+-- [[ COELHO HUB V18 - AJUSTE DE AUTO QUEST ]]
+
+task.spawn(function()
+    while task.wait(1) do -- Verifica a cada 1 segundo
+        pcall(function()
+            if _G.Config.FarmAtivo then
+                local lvl = player.Data.Level.Value
+                local data = AllQuests[1]
+                
+                -- 1. IDENTIFICA A MELHOR MISSÃO PARA O SEU NÍVEL
+                for i = #AllQuests, 1, -1 do
+                    if lvl >= AllQuests[i].Level then
+                        data = AllQuests[i]
+                        break
+                    end
+                end
+
+                -- 2. LÓGICA DE PEGAR MISSÃO (SE ESTIVER SEM NENHUMA)
+                if not player.PlayerGui.Main.Quest.Visible then
+                    -- Voa até o NPC da Database
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(data.NPC)
+                    task.wait(0.5)
+                    
+                    -- Chama o Remote para aceitar a missão automaticamente
+                    CommF:InvokeServer("StartQuest", data.Quest, data.ID)
+                    print("Coelho Hub: Missão " .. data.Quest .. " aceita!")
+                else
+                    -- 3. SE JÁ TEM MISSÃO, VAI ATÉ OS MOBS (FARM)
+                    for _, e in pairs(game.Workspace.Enemies:GetChildren()) do
+                        if e.Name == data.Mob and e:FindFirstChild("HumanoidRootPart") and e.Humanoid.Health > 0 then
+                            -- Voa para cima do Mob (10 studs de altura para não bugar)
+                            player.Character.HumanoidRootPart.CFrame = e.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
+                            
+                            -- Sistema de Ataque Eclipse Hub (V18)
+                            game:GetService("ReplicatedStorage").Modules.Net["RE/RegisterAttack"]:FireServer(0)
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end)
+
 print("Coelho Hub: Sistema de Créditos Vermelhos ativado! 🕶️🔥🐇")
 
 print("COELHO HUB BETA CARREGADO! 🕶️🔥🐇")
