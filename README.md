@@ -999,6 +999,85 @@ loadAnim.Completed:Connect(function()
     LoadUI:Destroy() -- Destrói a barrinha
     BuildUI()       -- Abre a UI larga com seus botões e missões
 end)
+-- [[ COELHO HUB V18 - FIX DE MOVIMENTO E FARM ]]
+
+local CoreGui = game:GetService("CoreGui")
+local TS = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
+
+-- [[ CONTROLES ]]
+_G.FarmAtivo = false
+
+-- [[ LIMPEZA ]]
+if CoreGui:FindFirstChild("CoelhoLoading") then CoreGui.CoelhoLoading:Destroy() end
+if CoreGui:FindFirstChild("CoelhoHubBeta") then CoreGui.CoelhoHubBeta:Destroy() end
+
+-- [[ 1. BARRINHA RÁPIDA ]]
+local LoadUI = Instance.new("ScreenGui", CoreGui); LoadUI.Name = "CoelhoLoading"
+local LoadMain = Instance.new("Frame", LoadUI); LoadMain.Size = UDim2.new(0, 400, 0, 100); LoadMain.Position = UDim2.new(0.5, -200, 0.5, -50); LoadMain.BackgroundColor3 = Color3.fromRGB(5,5,5); Instance.new("UICorner", LoadMain)
+local BarFill = Instance.new("Frame", LoadMain); BarFill.Size = UDim2.new(0, 0, 0, 10); BarFill.Position = UDim2.new(0.5, -175, 0.7, 0); BarFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0); Instance.new("UICorner", BarFill)
+
+-- [[ 2. UI WIDE ]]
+local function BuildUI()
+    local UI = Instance.new("ScreenGui", CoreGui); UI.Name = "CoelhoHubBeta"
+    local Main = Instance.new("Frame", UI); Main.Size = UDim2.new(0, 650, 0, 500); Main.Position = UDim2.new(0.5, -325, 0.5, -250); Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10); Main.Draggable = true; Main.Active = true; Instance.new("UICorner", Main)
+    Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
+    
+    local FarmBtn = Instance.new("TextButton", Main); FarmBtn.Size = UDim2.new(0, 300, 0, 50); FarmBtn.Position = UDim2.new(0.5, -150, 0.5, -25); FarmBtn.Text = "LIGAR AUTO FARM"; FarmBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30); FarmBtn.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", FarmBtn)
+
+    FarmBtn.MouseButton1Click:Connect(function()
+        _G.FarmAtivo = not _G.FarmAtivo
+        FarmBtn.Text = _G.FarmAtivo and "FARM: LIGADO" or "FARM: DESLIGADO"
+        FarmBtn.BackgroundColor3 = _G.FarmAtivo and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(30, 30, 30)
+    end)
+
+    -- [[ 3. MOTOR DE FARM REFEITO ]]
+    task.spawn(function()
+        while task.wait(0.1) do -- Loop mais rápido para resposta imediata
+            if _G.FarmAtivo then
+                pcall(function()
+                    local Character = player.Character
+                    if not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+                    
+                    local MyLevel = player.Data.Level.Value
+                    local NameQuest, LevelQuest, CFrameQuest, CFrameMon
+
+                    -- TABELA SIMPLIFICADA PARA TESTE (SEA 1)
+                    if MyLevel <= 9 then
+                        NameQuest = "BanditQuest1"; LevelQuest = 1; CFrameQuest = CFrame.new(1059, 17, 1546); CFrameMon = CFrame.new(943, 45, 1562)
+                    elseif MyLevel <= 249 then
+                        NameQuest = "PrisonerQuest"; LevelQuest = 2; CFrameQuest = CFrame.new(5306, 2, 477); CFrameMon = CFrame.new(5655, 16, 866)
+                    else
+                        NameQuest = "FountainQuest"; LevelQuest = 2; CFrameQuest = CFrame.new(5259, 38, 4050); CFrameMon = CFrame.new(5663, 38, 4474)
+                    end
+
+                    -- VERIFICAÇÃO SE TEM MISSÃO (OLHANDO O DATA DO PLAYER)
+                    local HasQuest = player.PlayerGui.Main.Quest.Visible
+                    
+                    if not HasQuest then
+                        -- TELEPORTE PARA O NPC
+                        Character.HumanoidRootPart.CFrame = CFrameQuest
+                        task.wait(0.3)
+                        -- DISPARA O COMANDO DE PEGAR MISSÃO
+                        RS.Remotes.CommF_:InvokeServer("StartQuest", NameQuest, LevelQuest)
+                    else
+                        -- TELEPORTE PARA O MONSTRO
+                        Character.HumanoidRootPart.CFrame = CFrameMon
+                        -- Aqui você pode adicionar sua função de ataque (Kill Aura/Auto Click)
+                    end
+                end)
+            end
+        end
+    end)
+end
+
+-- [[ INICIAR ]]
+TS:Create(BarFill, TweenInfo.new(2), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+task.wait(2.1)
+LoadUI:Destroy()
+BuildUI()
 
 print("Coelho Hub: Módulo de Compatibilidade (PC/Mobile) pronto! 🕶️🔥")
 
