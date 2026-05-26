@@ -1,4 +1,4 @@
--- [[ Coelho Hub - Clean Template ]]
+-- [[ Coelho Hub - Clean Template ]
 -- Desenvolvido na pura força do tédio (e do pó de café)
 -- Créditos: by mr by tedio
 
